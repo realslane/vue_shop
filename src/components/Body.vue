@@ -1,7 +1,11 @@
 <script setup>
-import Hits from './Hits.vue'
+    import Hits from './Hits.vue';
 </script>
-
+<script>
+    export default {
+        props: ['findByText', 'findByPrice', 'products']
+    };
+</script>
 <template>
     <main>
         <div class="block_title">Shop Info</div>
@@ -14,7 +18,7 @@ import Hits from './Hits.vue'
                 The store director
             </div>
         </div>
-        <Hits />
+        <Hits :findByText="findByText" :findByPrice="findByPrice" :products="products"/>
     </main>
 </template>
 

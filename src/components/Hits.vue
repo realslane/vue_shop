@@ -1,19 +1,42 @@
 <script>
-    import productsData from "/src/assets/products.json";
-
     export default {
-        data() {
-            return {
-                products: productsData,
-            };
+        methods: {
+            findProduct() {
+                let products = this.products;
+
+                if (this.findByText !== '') {
+                    products = products.filter(product => ~(product.title).indexOf(this.findByText));
+                }
+
+                if (this.findByPrice !== '') {
+                    products = products.filter(product => parseFloat(product.price) <= parseFloat(this.findByPrice));
+                }
+
+                return products;
+            },
+            showAddProduct() {
+                document.querySelector('.add_product_form').style.display = 'block';
+            },
+            showOrderProduct(productId) {
+                document.querySelector('.order_product_form').style.display = 'block';
+                document.querySelector('#order_prodict_id').innerText = productId;
+            }
         },
+        props: {
+            findByText: String,
+            findByPrice: String,
+            products: Object
+        }
     };
 </script>
 
 <template>
-    <div class="block_title">Sales Hits</div>
+    <div class="block_title">
+        <span>Sales Hits</span>
+        <button class="add_product" @click="showAddProduct">+ Add Product</button>
+    </div>
     <div class="products">
-        <div class="p_wrap" v-for="product in products" :key="product.id">
+        <div class="p_wrap" v-for="product in findProduct()" :key="product.id">
             <div class="product">
                 <div class="p_img">
                     <a href="">
@@ -21,7 +44,8 @@
                     </a>
                 </div>
                 <div class="p_price">
-                    <span>{{ product.price }}</span> кредитов
+                    <span>{{ product.price }}</span> у.е.
+                    <button @click="showOrderProduct(product.id)">Заказать</button>
                 </div>
                 <a href="" class="p_name">{{product.title}}</a>
             </div>
@@ -30,6 +54,10 @@
 </template>
 
 <style scoped>
+    .add_product {
+        float: right;
+        padding: 10px 30px;
+    }
     .products {
         display: flex;
         flex-wrap: wrap;
@@ -64,6 +92,9 @@
     .p_price span {
         font-size: 20px;
         color: #753a13;
+    }
+    .p_price button {
+        margin-left: 10px;
     }
     .p_name {
         font-size: 18px;
