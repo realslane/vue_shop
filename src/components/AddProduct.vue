@@ -30,6 +30,19 @@
                 }
 
                 return 'Field is required!'
+            },
+            checkPrice(value) {
+                const required = this.isRequired(value);
+
+                if (required !== true) {
+                    return required;
+                }
+
+                if (+value > 0) {
+                    return true;
+                }
+
+                return 'Field must be "Numeric" > 0'
             }
         },
         props: {
@@ -49,7 +62,7 @@
             <ErrorMessage name="productName"/><br/><br/>
 
             Цена:<br/>
-            <Field name="productPrice" v-model="productPrice" :rules="isRequired"/><br/>
+            <Field name="productPrice" v-model="productPrice" :rules="checkPrice"/><br/>
             <ErrorMessage name="productPrice"/><br/><br/>
 
             <button>Добавить</button>
