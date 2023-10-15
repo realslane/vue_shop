@@ -1,6 +1,10 @@
 <script setup>
-    const props = defineProps(['siteName', 'findByText', 'findByPrice']);
+    import { useRouter } from 'vue-router';
+
     const emit = defineEmits();
+    const props = defineProps(['siteName', 'findByText', 'findByPrice']);
+
+    const routerList = useRouter().options.routes;
 </script>
 
 <template>
@@ -13,6 +17,11 @@
             Цена (меньше введенной):<br/>
             <input type="text" @input="emit('setFindByPrice', $event.target.value)"/>
         </div>
+        <div class="nav_menu">
+            <ul>
+                <li v-for="(routeConfig, index) in routerList.filter(route => route.title !== '')" :key="index"><RouterLink :to="routeConfig.path" v-text="routeConfig.title"/></li>
+            </ul>
+        </div>
     </header>
 </template>
 
@@ -24,6 +33,22 @@
     .logo {
         height: 60px;
         float: left;
+    }
+    .nav_menu {
+        width: 100%;
+        text-align: center;
+        clear: both;
+        padding-top: 20px;
+    }
+    .nav_menu ul {
+        margin: 2px auto;
+        line-height: 1.4;
+        padding-left: 0;
+    }
+    .nav_menu li {
+        display: inline;
+        text-align: center;
+        padding: 0 20px;
     }
     .search_block {
         width: 30%;

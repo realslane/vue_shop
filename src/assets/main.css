@@ -9,6 +9,10 @@ a {
   transition: 0.4s;
 }
 
+.fr {
+    float: right;
+}
+
 .block_title {
     text-align: center;
     margin: 40px 0 20px 0;
