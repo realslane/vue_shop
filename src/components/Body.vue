@@ -1,5 +1,5 @@
 <script setup>
-    import Hits from './Hits.vue';
+    import PageProductList from './PageProductList.vue';
 </script>
 <script>
     export default {
@@ -18,7 +18,7 @@
                 The store director
             </div>
         </div>
-        <Hits :findByText="findByText" :findByPrice="findByPrice" :products="products"/>
+        <PageProductList :findByText="findByText" :findByPrice="findByPrice" :products="products"/>
     </main>
 </template>
 

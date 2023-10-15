@@ -1,6 +1,20 @@
 <script>
     export default {
+        computed: {
+            cartFromLocalStorage() {
+                return JSON.parse(localStorage.getItem('cart') || '[]');
+            }
+        },
+        emits: [ 'addProduct' ],
         methods: {
+            addToCart(productId) {
+                if (localStorage.getItem('cart') === null) {
+                    localStorage.setItem('cart', JSON.stringify({}));
+                }
+
+                this.cart[productId] = this.cart[productId] === undefined ? 1 : ++this.cart[productId];
+                localStorage.setItem('cart', JSON.stringify(this.cart));
+            },
             findProduct() {
                 let products = this.products;
 
@@ -14,13 +28,28 @@
 
                 return products;
             },
-            showAddProduct() {
-                document.querySelector('.add_product_form').style.display = 'block';
+            getProduct(param) {
+                let product = this.products.filter(product => product.id == this.productId);
+
+                if (product.length) {
+                    return product[0][param];
+                }
             },
-            showOrderProduct(productId) {
-                document.querySelector('.order_product_form').style.display = 'block';
-                document.querySelector('#order_prodict_id').innerText = productId;
+            inCart(productId) {
+                if (localStorage.getItem('cart') === null) {
+                    return 0;
+                }
+
+                return this.cart[productId] === undefined ? 0 : this.cart[productId];
             }
+        },
+        data() {
+            return {
+                cart: [],
+            };
+        },
+        created() {
+            this.cart = this.cartFromLocalStorage;
         },
         props: {
             findByText: String,
@@ -33,21 +62,20 @@
 <template>
     <div class="block_title">
         <span>Sales Hits</span>
-        <button class="add_product" @click="showAddProduct">+ Add Product</button>
     </div>
     <div class="products">
         <div class="p_wrap" v-for="product in findProduct()" :key="product.id">
             <div class="product">
                 <div class="p_img">
-                    <a href="">
+                    <RouterLink :to="`/product/${product.id}`">
                         <img :src=product.image />
-                    </a>
+                    </RouterLink>
                 </div>
                 <div class="p_price">
                     <span>{{ product.price }}</span> у.е.
-                    <button @click="showOrderProduct(product.id)">Заказать</button>
+                    <button @click="addToCart(product.id)">Добавить в корзину ({{ inCart(product.id) }})</button>
                 </div>
-                <a href="" class="p_name">{{product.title}}</a>
+                <RouterLink :to="`/product/${product.id}`" class="p_name">{{product.title}}</RouterLink>
             </div>
         </div>
     </div>

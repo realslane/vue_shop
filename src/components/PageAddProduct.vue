@@ -9,20 +9,24 @@
             return {
                 productName: '',
                 productPrice: '',
+                login: localStorage.login
             };
+        },
+        mounted() {
+            if (!localStorage.login) {
+                this.$router.push({name: 'PageLogin'});
+            }
         },
         methods: {
             addProduct(emit) {
                 emit('addProduct', {
-                    id: this.maxId + 1,
+                    id: Math.max(...this.products.map(product => product.id)) + 1,
                     title: this.productName,
                     price: this.productPrice,
-                    image: 'no_photo.jpg'
+                    image: '/no_photo.jpg'
                 });
-                this.hideAddProduct();
-            },
-            hideAddProduct() {
-                document.querySelector('.add_product_form').style.display = 'none';
+                this.productName = this.productPrice = '';
+                this.$router.push({ name: 'PageProductList' });
             },
             isRequired(value) {
                 if (value && value.trim()) {
@@ -46,15 +50,15 @@
             }
         },
         props: {
-            maxId: Number
+            maxId: Number,
+            products: Object
         }
     };
 </script>
 
 <template>
-    <div class="modal_form add_product_form">
-        <button class="hide_form" @click="hideAddProduct">Закрыть</button>
-        <h2>Добавить товар</h2>
+    <div class="add_product_form">
+        <h2>Добавить товар {{ this.login }}</h2>
 
         <Form @submit="addProduct(emit)">
             Название товара:<br/>
