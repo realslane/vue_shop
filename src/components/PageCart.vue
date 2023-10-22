@@ -8,11 +8,6 @@
         created() {
             this.cart = this.cartFromLocalStorage;
         },
-        mounted() {
-            if (!localStorage.login) {
-                this.$router.push({name: 'PageLogin'});
-            }
-        },
         computed: {
             cartFromLocalStorage() {
                 return JSON.parse(localStorage.getItem('cart') || '[]');

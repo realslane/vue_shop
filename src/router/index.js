@@ -57,4 +57,16 @@ const router = createRouter({
   routes
 });
 
+router.beforeEach(async(to) => {
+    const needAuthPages = [
+        'PageOrder',
+        'PageCart',
+        'PageAddProduct'
+    ];
+
+    if (needAuthPages.includes(to.name) && !localStorage.login) {
+        return '/login';
+    }
+});
+
 export default router;

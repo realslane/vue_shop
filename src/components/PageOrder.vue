@@ -12,11 +12,6 @@
                 agree: ''
             };
         },
-        mounted() {
-            if (!localStorage.login) {
-                this.$router.push({name: 'PageLogin'});
-            }
-        },
         emits: [ 'addProduct' ],
         methods: {
             confirmOrder() {

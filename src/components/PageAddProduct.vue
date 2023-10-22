@@ -8,14 +8,8 @@
         data() {
             return {
                 productName: '',
-                productPrice: '',
-                login: localStorage.login
+                productPrice: ''
             };
-        },
-        mounted() {
-            if (!localStorage.login) {
-                this.$router.push({name: 'PageLogin'});
-            }
         },
         methods: {
             addProduct(emit) {
@@ -58,7 +52,7 @@
 
 <template>
     <div class="add_product_form">
-        <h2>Добавить товар {{ this.login }}</h2>
+        <h2>Добавить товар</h2>
 
         <Form @submit="addProduct(emit)">
             Название товара:<br/>
